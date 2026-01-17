@@ -2,3 +2,10 @@ CRTS ed.1 | CFS Security
 
 Docente - Manuel Quevedo
 
+Red Team: Grupo de profesionales de seguridad que simulan el rol de un atacante real
+Blue Team: Equipo de defensa de la organización encargado de detectar y responder a amenazas
+Purple Team: Enfoque colaborativo entre Blue y Red Team para mejorar la defensa
+TTPs (Tactics, Techniques, and Procedures): Tácticas, técnicas y procedimientos utilizados por atacantes reales
+OPSEC (Operational Security): Prácticas para mantener operaciones encubiertas y evitar detección
+C2 (Command and Control): Infraestructura utilizada para controlar sistemas comprometidos
+Objetivos de Negocio: Los ejercicios de Red Team se alinean con objetivos específicos de la organización
