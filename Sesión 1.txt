@@ -2,6 +2,8 @@ CRTS ed.1 | CFS Security
 
 Docente - Manuel Quevedo
 
+Modulo 1: 
+
 Red Team: Grupo de profesionales de seguridad que simulan el rol de un atacante real
 Blue Team: Equipo de defensa de la organización encargado de detectar y responder a amenazas
 Purple Team: Enfoque colaborativo entre Blue y Red Team para mejorar la defensa
@@ -9,3 +11,74 @@ TTPs (Tactics, Techniques, and Procedures): Tácticas, técnicas y procedimiento
 OPSEC (Operational Security): Prácticas para mantener operaciones encubiertas y evitar detección
 C2 (Command and Control): Infraestructura utilizada para controlar sistemas comprometidos
 Objetivos de Negocio: Los ejercicios de Red Team se alinean con objetivos específicos de la organización
+
+Ej. {Objetivo de un banco} - El Red Team debe demostrar que puede robar tu dinero
+
+Diferencias entre Pentesting y Red Team
+
+Aspecto			| Pentesting 						| Red Team
+Alcance 		| Limitado a sistemas o aplicaciones especificas 	| Toda la organización (personas, procesos, tecnología)
+Objetivo 		| Identificar vulnerabilidades técnicas 		| Evaluar la capacidad de detección y respuesta ante amenazas reales
+Enfoque 		| Exhaustivo y metodológico 				| Orientado a objetivos especificos del negocio
+Tiempo 			| Días o semanas 					| Semanas o meses
+Conocimiento previo 	| Generalmente la organización está informada		| Puede ser sin conocimiento previo
+Técnicas		| Tecnicas estandar de pentesting			| TTPs de adversarios reales, ingeniería social, evasión
+Evasión 		| No es prioritaria					| Esencial para simular amenazas reales
+Reportes		| Lista detallada de vulnerabilidades			| Análisis de la efectividad de las defensas y recomendaciones estratégicas
+										  Detalle del tiempo {que, cuando, como y donde}
+
+Seguridad - Operaciones - Gerencia - Area contable - Soporte [X]
+
+¿Por qué Soporte? Ante cualquier incoveniente se llama a Mesa de ayuda, el cual, tiene permisos elevados como ingresar a tu computadora para arreglar problemas.
+
+Cualidades del Red Team
+
+Pensamiento adversario - Manipular
+Adaptabilidad y creatividad 
+Seguridad Operativa
+Comunicación efectiva
+Conocimiento técnico profundo
+Ética y profesionalismo
+
+Se suma la Infraestructura & Cloud y también la IA
+
+Principios fundamentales:
+-Asumir compromiso: Pensar que siempre hay una manera de comprometer el objetivo
+-Persistencia: No rendirse ante el primer obstaculo, buscar caminos alternativos
+-Sigilo y paciencia: Operar de manera encubierta, tomando el tiempo necesario para evitar detección
+-Adaptabilidad: Ajustar tácticas según las defensas encontradas y el entorno
+-Objetivo sobre método: Priorizar alcanzar los objetivos del ejercicio sobre usar técnicas específicas
+-Pensamiento lateral: Buscar vectores de ataque no convencionales y creativos
+
+{Siempre pensar en el peor escenario posible para la organización}
+
+Interacción con la organización víctima
+-Antes del ejercicio
+	-Reuniones de alcance para definir objetivos, reglas de enfrentamiento y límites
+	-Firma de acuerdos legales y autorizaciones escritas
+	-Esablecimiento de contactos de emergencia
+	-Definición de sistemas fuera de alcance
+-Durante el ejercicio
+	-Operación encubierta sin comunicación con la organización
+	-Simulación realista de un adversario con objetivos específicos
+	-Documentación exhaustiva de todas las acciones realizadas {Todo se documenta en la hora que se ejecuta}
+	-Respeto absoluto a las reglas de enfrentamiento acordadas
+	-En algunos casos, puede haber "tarjetas amarillas" donde se advierte al Blue Team sin revelar métodos
+-Después del ejercicio
+	-Sesión de "hot wash" o debrief inmediato con observaciones iniciales
+	-Entrega de informe detallado con hallazgos, TTPs utilizadas y recomendaciones
+	-Presentación ejecutiva
+	-Sesiones técnicas con el Blue Team
+	-Seguimiento y apoyo en la implementación de mejoras
+
+Consideraciones éticas:
+	-Confidencialidad total
+	-No causar daño
+	-Profesionalismo
+	-Transparencia
+	-Objetivo constructivo
+
+Retesting se fija en el contrato inicial - {Se definen temas legales}
+
+Debian --> C2 (Entorno Mate)
+Kali VM o Parrot VM
