@@ -26,13 +26,13 @@ Windows API son el conjunto de funciones expuestas por estas DLLs para permitir 
 
 ### Liberias comunes
 
-KERNEL32.dll 	-> Creación de archivos, inyectar memoria ejecutable, controlar procesos. Normalmente usado por loaders, malware avanzado, ransomware
-ADVAPI32.dll 	-> Creación/Modificación de servicios, gestionar permisos y utilizar funciones criptograficas. Esta DLL es crítica porque permite establecer persistencia, creando servicios que se inician al arrancar el sistema o modificando claves del registro
-USER32.dll   	-> Interacción con el usuario e interfaz gráfica. 
-WININET.dll  	-> Proporciona comunicaciones HTTP/HTTPS, es un indicador que tiene la capacidad de comunicarse con servidores remotos, descargar archivos o enviar información. En malware suele asociarse con comunicaciones con servidores de comando y control (C2)
-URLMON.dll   	-> Descarga de recursos de Internet mediante protocolos HTTP/HTTPS/FTP. Permite descargar directamente archivos, almacenarlos con una sola llamada, sin necesidad de implementar lógica de red compleja ni manejar sesiones.
-MSVCRT.dll   	-> Herramientas básicas de gestión de memoria, manipulación de cadenas, etc. Para malware escrito en C o C++
-CRUNTIME140.dll	-> Binarios compilado en versiones modernas de Visual C++. Esto sugiere que esta diseñado para sistemas actuales y no para legacy
+- KERNEL32.dll 	-> Creación de archivos, inyectar memoria ejecutable, controlar procesos. Normalmente usado por loaders, malware avanzado, ransomware
+- ADVAPI32.dll 	-> Creación/Modificación de servicios, gestionar permisos y utilizar funciones criptograficas. Esta DLL es crítica porque permite establecer persistencia, creando servicios que se inician al arrancar el sistema o modificando claves del registro
+- USER32.dll   	-> Interacción con el usuario e interfaz gráfica. 
+- WININET.dll  	-> Proporciona comunicaciones HTTP/HTTPS, es un indicador que tiene la capacidad de comunicarse con servidores remotos, descargar archivos o enviar información. En malware suele asociarse con comunicaciones con servidores de comando y control (C2)
+- URLMON.dll   	-> Descarga de recursos de Internet mediante protocolos HTTP/HTTPS/FTP. Permite descargar directamente archivos, almacenarlos con una sola llamada, sin necesidad de implementar lógica de red compleja ni manejar sesiones.
+- MSVCRT.dll   	-> Herramientas básicas de gestión de memoria, manipulación de cadenas, etc. Para malware escrito en C o C++
+- CRUNTIME140.dll	-> Binarios compilado en versiones modernas de Visual C++. Esto sugiere que esta diseñado para sistemas actuales y no para legacy
 
 [Link](https://learn.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/platform-apis/ms775123(v=vs.85))
 [Malapi.io](https://malapi.io/)
