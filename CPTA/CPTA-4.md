@@ -10,6 +10,7 @@ run
 
 background
 
+//En meterpreter:
 run post/multi/recon/local_exploit_suggester
 ```
 
