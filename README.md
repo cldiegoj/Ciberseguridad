@@ -17,6 +17,6 @@
 - [x] CyberSOC - UNI
 - [x] CEH - Cisco Networking Academy
 - [x] Certified Red Team Specialist - CFC Security
-[] eJPT
-[] CEH 
-[] ISO/IEC 27001:2022 Lead Auditor
+- [] eJPT
+- [] CEH 
+- [] ISO/IEC 27001:2022 Lead Auditor
