@@ -16,7 +16,7 @@
 - [x] Pentesting Web - UNI
 - [x] CyberSOC - UNI
 - [x] CEH - Cisco Networking Academy
-- [] Certified Red Team Specialist - CFC Security
-- [] eJPT
-- [] CEH 
-- [] ISO/IEC 27001:2022 Lead Auditor
+- [x] Certified Red Team Specialist - CFC Security
+[] eJPT
+[] CEH 
+[] ISO/IEC 27001:2022 Lead Auditor
